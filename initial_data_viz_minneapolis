@@ -5,6 +5,14 @@ library(PWFSLSmoke)
 library(MazamaSpatialUtils)
 library(AirSensor)
 
+install.packages('knitr')
+install.packages('rmarkdown')
+devtools::install_github("MazamaScience/AirSensor")
+
+initializeMazamaSpatialUtils(
+  spatialDataDir = "~/Data/Spatial",
+  stateCodeDataset = "NaturalEarthAdm1"
+)
 
 #####Minneapolis map
 
@@ -26,11 +34,12 @@ sensor_map
 
 minnesota_2015 <-
   monitor_loadAnnual(2015) %>%
-  monitor_subset(stateCodes = 'MN')
+  monitor_subset(stateCodes = 'MN') %>%
+  monitor_subset(tlim=(c(20150701,20150713)))
 
 minneapolis_2015 <-
   minnesota_2015 %>%
-  monitor_subset(monitorIDs = c('270530962_01', '270530963_01', '270531909_01')) 
+  monitor_subset(monitorIDs = c('270530962_01', '270530963_01')) 
 
 monitor_timeseriesPlot(
   minnesota_2015,
@@ -47,14 +56,15 @@ title("Air Quality Monitors Minneapolis 2015")
 #####Air Quality Monitors Minneapolis 2016
 minnesota_2016 <-
   monitor_loadAnnual(2016) %>%
-  monitor_subset(stateCodes = 'MN')
+  monitor_subset(stateCodes = 'MN') %>%
+  monitor_subset(tlim= (c(20160504, 20160512))) 
 
 minneapolis_2016 <-
   minnesota_2016 %>%
-  monitor_subset(monitorIDs = c('270530962_01', '270530963_01', '270531909_01')) 
+  monitor_subset(monitorIDs = c('270530962_01', '270530963_01')) 
 
 monitor_timeseriesPlot(
-  minnesota_2016,
+  minneapolis_2016,
   style='aqidots',
   pch=16,
   xlab="2016"
@@ -76,7 +86,7 @@ minneapolis_2017 <-
   monitor_subset(monitorIDs = c('270530962_01', '270530963_01', '270531909_01')) 
 
 monitor_timeseriesPlot(
-  minnesota_2017,
+  minneapolis_2017,
   style='aqidots',
   pch=16,
   xlab="2017"
@@ -91,14 +101,15 @@ title("Air Quality Monitors Minneapolis 2017")
 
 minnesota_2018 <-
   monitor_loadAnnual(2018) %>%
-  monitor_subset(stateCodes = 'MN')
+  monitor_subset(stateCodes = 'MN') %>%
+  monitor_subset(tlim= (c(20180701, 20180708))) 
 
 minneapolis_2018 <-
   minnesota_2018 %>%
   monitor_subset(monitorIDs = c('270530962_01', '270530963_01', '270531909_01')) 
 
 monitor_timeseriesPlot(
-  minnesota_2018,
+  minneapolis_2018,
   style='aqidots',
   pch=16,
   xlab="2018"
@@ -113,14 +124,15 @@ title("Air Quality Monitors Minneapolis 2018")
 
 minnesota_2019 <-
   monitor_loadAnnual(2019) %>%
-  monitor_subset(stateCodes = 'MN')
+  monitor_subset(stateCodes = 'MN') %>%
+  monitor_subset(tlim= (c(20190101, 20190331))) 
 
 minneapolis_2019 <-
   minnesota_2019 %>%
-  monitor_subset(monitorIDs = c('270530962_01', '270530963_01', '270531909_01')) 
+  monitor_subset(monitorIDs = c('270530962_01', '270530963_01')) 
 
 monitor_timeseriesPlot(
-  minnesota_2019,
+  minneapolis_2019,
   style='aqidots',
   pch=16,
   xlab="2019"
@@ -135,14 +147,15 @@ title("Air Quality Monitors Minneapolis 2019")
 
 minnesota_2020 <-
   monitor_loadAnnual(2020) %>%
-  monitor_subset(stateCodes = 'MN')
+  monitor_subset(stateCodes = 'MN') %>%
+  monitor_subset(tlim= (c(20200701, 20200709))) 
 
 minneapolis_2020 <-
   minnesota_2020 %>%
   monitor_subset(monitorIDs = c('270530962_01', '270530963_01', '270531909_01')) 
 
 monitor_timeseriesPlot(
-  minnesota_2020,
+  minneapolis_2020,
   style='aqidots',
   pch=16,
   xlab="2020"
@@ -153,7 +166,7 @@ addAQILegend(cex=0.8)
 title("Air Quality Monitors Minneapolis 2020")
 
 
-######### AIr Quality Sensors Minneapolis 2015
+######### Air Quality Sensors Minneapolis 
 
 library(AirSensor)
 
@@ -171,86 +184,61 @@ if ( interactive() ) {
 }
 
 
-
-
-monitor_timeseriesPlot(
-  air_sensors_minneapolis,
-  style='aqidots',
-  pch=16,
-  xlab="2020"
-)
-addAQIStackedBar()
-addAQILines()
-addAQILegend(cex=0.8)
-title("Air Quality Monitors Minneapolis 2020")
-
-
-initializeMazamaSpatialUtils()
-
-example_sensor <- pat_createNew(
-  label = "SCAN_14",
-  pas = example_pas,
-  startdate = "2018-08-14",
-  enddate = "2018-09-07"
-) 
-pat_createAirSensor(parameter = 'pm25', FUN = AirSensor::PurpleAirQC_hourly_AB_01)
-
-save(example_sensor, file = "data/example_sensor.rda")
-
+#####Air Quality Sensors 
 
 library(AirSensor)
+library(dplyr)
+library(ggplot2)
+
 setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 
+pas <- pas_load()
 
+pas %>% 
+  select(starts_with("pm25_")) %>% 
+  head(5)
 
+pas %>% 
+  pas_leaflet()
 
-###air sensor 
-
-
-
-
-minneapolis <-
-  minnesota_fire %>%
-  monitor_subset(monitorIDs = 'PA_108334') #specific code from air quality
-  #monitor that can be found through monitor_leaflet(minnesota fire) command
-
-monitor_timeseriesPlot(
-  minneapolis,
-  style='aqidots',
-  pch=16,
-  xlab="2020"
-)
-addAQIStackedBar()
-addAQILines()
-addAQILegend(cex=0.8)
-title("Minneapolis Smoke")  #creates specific smoke annual plot for specific city
-
-minneapolis_area <- minnesota_fire %>% monitor_subsetByDistance(longitude = minneapolis$meta$longitude, latitude = minneapolis$meta$latitude, radius = 50)
-monitor_leaflet(minneapolis_area) #creates specific aqi level map for city
-
-##
-
-###
-
-###
-
+lalala <- pas %>% 
+  filter(stateCode == 'MN') %>% 
+  pas_leaflet(parameter = "pm25_6hr")
 ####
 
-#####
-library(leaflet)
-minneapolis_map <- leaflet() %>%
-  addTiles() %>%
-  setView(lng=-93.26384, lat=44.97997, zoom=11)
+library(MazamaSpatialUtils)
+initializeMazamaSpatialUtils()
+?initializeMazamaSpatialUtils()
 
-minneapolis_map
+initializeMazamaSpatialUtils(
+  spatialDataDir = "~/Data/Spatial",
+  stateCodeDataset = "NaturalEarthAdm1",
+  logLevel = WARN
 
+)
 
+data("SimpleCountriesEEZ", package = "MazamaSpatialUtils")
+data("SimpleTimezones", package = "MazamaSpatialUtils")
+MazamaSpatialUtils::setSpatialDataDir('~/Data/Spatial')
+MazamaSpatialUtils::loadSpatialData('NaturalEarthAdm1')
 
-airnow_data_2017 <- airnow_loadAnnual(2017) %>%
-  monitor_subset(stateCodes='MN') %>%
-  monitor_dailyStatistic() %>%
-  monitor_timeseriesPlot(style = 'gnats', ylim=c(0,300), xpd=NA)
-title("Minnnesota 2017 -- AirNow Daily Average PM2.5")
+spatialIsInitialized()
+initializeMazamaSpatialUtils(
+  spatialDataDir = "~/Data/Spatial",
+  stateCodeDataset = "NaturalEarthAdm1"
+)
 
-airnow_data_2017
+install.packages('knitr')
+install.packages('rmarkdown')
+devtools::install_github("MazamaScience/AirSensor")
+install.packages('AirSensor')
+library(AirSensor)
 
+pas_createNew(
+  countryCodes = "US",
+  includePWFSL = TRUE,
+  lookbackDays = 1825,
+  baseUrl = "https://www.purpleair.com/json?all=true"
+)
+
+?initalizeMazamaSpatialUtils()
