@@ -1,0 +1,228 @@
+quarter_1 <- speciationData_27.053.0963_Q1
+quarter_2 <- speciationData_27.053.0963_Q2
+quarter_3 <- speciationData_27.053.0963_Q3
+quarter_4 <- speciationData_27.053.0963_Q4
+annual <- speciationData_27.053.0963_Annual
+quarter_1$Su
+quarter_4
+quarter_2
+quarter_3
+quarter_1
+##annual
+
+annual$Sum <- rowSums(annual[,c(2,3,4,5,6,7)], na.rm=TRUE)
+annual
+
+sum_annual <- ggplot(annual, aes(year)) +       # Create ggplot2 plot
+  geom_line(aes(y = Sum), color = "black") +
+  ylab("Concentration (ug/m^3)") + 
+  xlab("Year") +
+  labs(title = "Annual") 
+
+sum_annual
+
+
+annual_plot <- ggplot(annual, aes(year)) +       # Create ggplot2 plot
+  geom_line(aes(y = Nitrate), color = "red") +
+  geom_line(aes(y = Crustal), color = "blue") +
+  geom_line(aes(y = Sulfate), color = "green") +
+  geom_line(aes(y = ElementalCarbon), color = "orange") +
+  geom_line(aes(y = OrganicCarbon), color = "purple") +
+  ylab("Concentration (ug/m^3)") +
+  xlab("Year") +
+  labs(title = "Annual") 
+
+  #ylim(0,7)
+annual_plot   
+
+
+###
+quarter_1$Sum
+
+
+
+
+quarter_1$Sum <- rowSums(quarter_1[,c(2,3,4,5,6,7)], na.rm=TRUE)
+quarter_2$Sum <- rowSums(quarter_2[,c(2,3,4,5,6,7)], na.rm=TRUE)
+quarter_3$Sum <- rowSums(quarter_3[,c(2,3,4,5,6,7)], na.rm=TRUE)
+quarter_4$Sum <- rowSums(quarter_4[,c(2,3,4,5,6,7)], na.rm=TRUE)
+
+quarter_1$Sum
+sum_ggp3 <- ggplot(quarter_3, aes(year)) +   
+  scale_x_continuous(labels=as.character(quarter_4$year),breaks=quarter_3$year) +        # Create ggplot2 plot
+  ylim(0,13) +
+  geom_line(aes(y = Sum), color = "black") +
+  ylab("Concentration (ug/m^3)") + 
+  xlab("Year") +
+  theme(axis.text.x = element_text(angle = 90)) +
+  labs(title = "Quarter 3")
+
+  
+
+sum_ggp3
+
+sum_ggp4 <- ggplot(quarter_4, aes(year)) + 
+  scale_x_continuous(labels=as.character(quarter_4$year),breaks=quarter_4$year) +
+  ylim(0,13) +
+  geom_line(aes(y = Sum), color = "black") +
+  ylab("Concentration (ug/m^3)") + 
+  xlab("Year") +
+  theme(axis.text.x = element_text(angle = 90)) +
+  labs(title = "Quarter 4") 
+
+sum_ggp4
+
+
+
+
+quarter_2
+#2001-2018 17 ticks
+
+sum_ggp2 <- ggplot(quarter_2, aes(year)) +  
+  scale_x_continuous(labels=as.character(quarter_2$year),breaks=quarter_2$year) + # Create ggplot2 plot
+  geom_line(aes(y = Sum), color = "black") +
+  ylim(0,13) +
+  ylab("Concentration (ug/m^3)") + 
+  xlab("Year") +
+  theme(axis.text.x = element_text(angle = 90)) +
+  labs(title = "Quarter 2")
+
+sum_ggp2
+
+#######
+
+
+  
+sum_ggp1 <- ggplot(quarter_1, aes(year)) +       # Create ggplot2 plot
+  scale_x_continuous(labels=as.character(quarter_1$year),breaks=quarter_1$year) + 
+  geom_line(aes(y = Sum), color = "black") +
+  ylab("Concentration (ug/m^3)") + 
+  xlab("Year") +
+  theme(axis.text.x = element_text(angle = 90)) +
+  labs(title = "Quarter 1") +
+  ylim(0,13)
+
+sum_ggp1
+
+sum_ggp1 + sum_ggp2 + sum_ggp3 + sum_ggp4
+
+###
+
+
+
+
+
+q1a <- mean(quarter_1$OrganicCarbon) + mean(quarter_2$OrganicCarbon) + mean(quarter_3$OrganicCarbon) + mean(quarter_4$OrganicCarbon)
+q1a / 4
+
+
+q1b <- mean(quarter_1$ElementalCarbon) + mean(quarter_2$ElementalCarbon) + mean(quarter_3$ElementalCarbon) + mean(quarter_4$ElementalCarbon)
+q1b / 4
+
+q1c <- mean(quarter_1$Nitrate) + mean(quarter_2$Nitrate) + mean(quarter_3$Nitrate) + mean(quarter_4$Nitrate)
+q1c / 4
+
+q1d <- mean(quarter_1$Sulfate) + mean(quarter_2$Sulfate) + mean(quarter_3$Sulfate) + mean(quarter_4$Sulfate)
+q1d / 4
+
+q1e <- mean(quarter_1$Crustal) + mean(quarter_2$Crustal) + mean(quarter_3$Crustal) + mean(quarter_4$Crustal)
+q1e / 4
+
+q1b <- mean(quarter_1$ElementalCarbon)
+q1c <- mean(quarter_1$Nitrate)
+q1d <- mean(quarter_1$Sulfate)
+q1e <- mean(quarter_1$Crustal)
+
+mean(quarter_2$OrganicCarbon)
+mean(quarter_2$ElementalCarbon)
+mean(quarter_2$Nitrate)
+mean(quarter_2$Sulfate)
+mean(quarter_2$Crustal)
+
+mean(quarter_3$OrganicCarbon)
+mean(quarter_3$ElementalCarbon)
+mean(quarter_3$Nitrate)
+mean(quarter_3$Sulfate)
+mean(quarter_3$Crustal)
+
+mean(quarter_4$OrganicCarbon)
+mean(quarter_4$ElementalCarbon)
+mean(quarter_4$Nitrate)
+mean(quarter_4$Sulfate)
+mean(quarter_4$Crustal)
+
+plot(quarter_1$year, quarter_1$OrganicCarbon, col = 'red')
+points(quarter_1$year, quarter_1$ElementalCarbon, col = 'blue')
+points(quarter_1$year, quarter_1$Crustal, col = 'green')
+points(quarter_1$year, quarter_1$Nitrate, col = 'yellow')
+points(quarter_1$year, quarter_1$Sulfate, col = 'black')
+
+install.packages("ggplot2")
+library(ggplot2)
+
+
+
+ggp1 <- ggplot(quarter_1, aes(year)) +  
+  scale_x_continuous(labels=as.character(quarter_1$year),breaks=quarter_1$year) + 
+  theme(axis.text.x = element_text(angle = 90)) + # Create ggplot2 plot
+  geom_line(aes(y = Nitrate), color = "red") +
+  geom_line(aes(y = Crustal), color = "blue") +
+  geom_line(aes(y = Sulfate), color = "green") +
+  geom_line(aes(y = ElementalCarbon), color = "orange") +
+  geom_line(aes(y = OrganicCarbon), color = "purple") +
+  ylab("Concentration (ug/m^3)") +
+  xlab("Year") +
+  labs(title = "Quarter 1") +
+  ylim(0,7)
+ggp1    
+
+
+ggp2 <- ggplot(quarter_2, aes(year)) +  
+  scale_x_continuous(labels=as.character(quarter_2$year),breaks=quarter_2$year) + 
+  theme(axis.text.x = element_text(angle = 90)) +# Create ggplot2 plot
+  geom_line(aes(y = Nitrate), color = "red") +
+  geom_line(aes(y = Crustal), color = "blue") +
+  geom_line(aes(y = Sulfate), color = "green") +
+  geom_line(aes(y = ElementalCarbon), color = "orange") +
+  geom_line(aes(y = OrganicCarbon), color = "purple") +
+  ylab("Concentration (ug/m^3)") +
+  xlab("Year") +
+  labs(title = "Quarter 2") +
+  ylim(0,7)
+
+ggp2  
+
+ggp3 <- ggplot(quarter_3, aes(year)) +
+  scale_x_continuous(labels=as.character(quarter_3$year),breaks=quarter_3$year) + 
+  theme(axis.text.x = element_text(angle = 90)) +       # Create ggplot2 plot
+  geom_line(aes(y = Nitrate), color = "red") +
+  geom_line(aes(y = Crustal), color = "blue") +
+  geom_line(aes(y = Sulfate), color = "green") +
+  geom_line(aes(y = ElementalCarbon), color = "orange") +
+  geom_line(aes(y = OrganicCarbon), color = "purple") +
+  ylab("Concentration (ug/m^3)") + 
+  xlab("Year") +
+  labs(title = "Quarter 3") +
+  ylim(0,7)
+
+ggp3  
+
+ggp4 <- ggplot(quarter_4, aes(year)) + 
+  scale_x_continuous(labels=as.character(quarter_4$year),breaks=quarter_4$year) + 
+  theme(axis.text.x = element_text(angle = 90)) + # Create ggplot2 plot
+  geom_line(aes(y = Nitrate), color = "red") +
+  geom_line(aes(y = Crustal), color = "blue") +
+  geom_line(aes(y = Sulfate), color = "green") +
+  geom_line(aes(y = ElementalCarbon), color = "orange") +
+  geom_line(aes(y = OrganicCarbon), color = "purple") +
+  ylab("Concentration (ug/m^3)") + 
+  xlab("Year") +
+  labs(title = "Quarter 4") +
+  ylim(0,7) 
+
+ggp4
+
+
+install.packages("patchwork")
+library(patchwork)
+ggp1 + ggp2 + ggp3 + ggp4
